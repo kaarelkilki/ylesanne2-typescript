@@ -73,3 +73,17 @@ Hea lahendus:
     - hoiab andmete ja DOM-i loogika eraldi,
 
     - kasutab tüüpe teadlikult.
+
+# Projekti seadistamine
+
+    npm init -y
+
+    npm install --save-dev typescript @types/node
+
+    npx 0tsc --init
+
+# Projekti käivitamine
+
+    npm run build
+
+    npm start
