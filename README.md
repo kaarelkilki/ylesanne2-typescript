@@ -76,14 +76,48 @@ Hea lahendus:
 
 # Projekti seadistamine
 
-    npm init -y
+```bash
+npm install
+```
 
-    npm install --save-dev typescript @types/node
+# Ülesanne 1 - Kontrollimise sammud
 
-    npx 0tsc --init
+## Variant 1: Node.js konsoolis
 
-# Projekti käivitamine
+```bash
+npm run build
+npm start
+```
 
-    npm run build
+Väljund ilmub terminali.
 
-    npm start
+## Variant 2: Brauseri konsoolis (nagu näidis)
+
+1. **Kompileeri kood:**
+
+   ```bash
+   npm run build
+   ```
+
+2. **Käivita lokaalne server:**
+
+   ```bash
+   npx http-server . -p 3000
+   ```
+
+3. **Ava brauser:**
+   - Mine aadressile: `http://localhost:3000/test.html`
+   - Vajuta **F12** (Chrome DevTools)
+   - Vaata **Console** tab'i
+
+Raport kuvatakse nii lehel kui ka brauseri konsooliaknas.
+
+## Projekti struktuur
+
+```
+src/
+├── types/index.ts          # Kõik TypeScript tüübid ja interface'id
+├── data/mockData.ts        # Näidisandmed (tooted, tarnijad, laoseis, jne)
+├── utils/calculations.ts   # Arvutusfunktsioonid (stock, ratings, discounts)
+└── console/report.ts       # Ülesanne 1: konsooliraport
+```
