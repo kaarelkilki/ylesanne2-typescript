@@ -1,0 +1,27 @@
+{
+  "name": "ylesanne2-typescript",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Konsoolirakendus: prindib Store Analytics raporti.",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/console/report.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaarelkilki/ylesanne2-typescript.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kaarelkilki/ylesanne2-typescript/issues"
+  },
+  "homepage": "https://github.com/kaarelkilki/ylesanne2-typescript#readme",
+  "devDependencies": {
+    "@types/node": "^25.2.3",
+    "typescript": "^5.9.3"
+  }
+}
