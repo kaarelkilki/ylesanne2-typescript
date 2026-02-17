@@ -106,11 +106,11 @@ Väljund ilmub terminali.
    ```
 
 3. **Ava brauser:**
-   - Mine aadressile: `http://localhost:3000/test.html`
+   - Mine aadressile: `http://localhost:3000/src/web/index.html`
    - Vajuta **F12** (Chrome DevTools)
    - Vaata **Console** tab'i
 
-Raport kuvatakse nii lehel kui ka brauseri konsooliaknas.
+Raport kuvatakse brauseri konsooliaknas samal lehel, kus on Ülesanne 2 UI.
 
 ## Projekti struktuur
 
@@ -148,6 +148,7 @@ src/
 3. **Ava brauser:**
    - Mine aadressile: `http://localhost:3000/src/web/index.html`
    - Rakendus laadib automaatselt mock-andmed LocalStorage'i
+   - Ülesanne 1 raport kuvatakse samal lehel brauseri Console tab'is
    - Testimise võimalused:
      - Lisa uusi tooteid (vorm kontrollib sisendi korrektsust)
      - Filtreeri tooteid laoseisu või kategooria järgi
