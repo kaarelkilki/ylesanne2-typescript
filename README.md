@@ -118,6 +118,84 @@ Raport kuvatakse nii lehel kui ka brauseri konsooliaknas.
 src/
 ├── types/index.ts          # Kõik TypeScript tüübid ja interface'id
 ├── data/mockData.ts        # Näidisandmed (tooted, tarnijad, laoseis, jne)
-├── utils/calculations.ts   # Arvutusfunktsioonid (stock, ratings, discounts)
-└── console/report.ts       # Ülesanne 1: konsooliraport
+├── utils/
+│   ├── calculations.ts     # Arvutusfunktsioonid (stock, ratings, discounts)
+│   └── storage.ts          # LocalStorage funktsioonid
+├── console/report.ts       # Ülesanne 1: konsooliraport
+└── web/
+    ├── app.ts              # Ülesanne 2: rakenduse loogika
+    ├── dom.ts              # DOM manipulatsioon
+    ├── index.html          # HTML struktuur
+    └── styles.css          # Stiilid
 ```
+
+# Ülesanne 2 - Kontrollimise sammud
+
+## Variant 1: Kohalik testimine
+
+1. **Kompileeri kood:**
+
+   ```bash
+   npm run build
+   ```
+
+2. **Käivita lokaalne server:**
+
+   ```bash
+   npx http-server . -p 3000
+   ```
+
+3. **Ava brauser:**
+   - Mine aadressile: `http://localhost:3000/src/web/index.html`
+   - Rakendus laadib automaatselt mock-andmed LocalStorage'i
+   - Testimise võimalused:
+     - Lisa uusi tooteid (vorm kontrollib sisendi korrektsust)
+     - Filtreeri tooteid laoseisu või kategooria järgi
+     - Sorteeri tooteid erinevate kriteeriumite järgi
+     - Kustuta tooteid
+     - Värskenda lehte - andmed peavad püsima (LocalStorage)
+     - Vajuta "Taasta algandmed" - algandmed taastatakse
+
+## Variant 2: Funktsionaalsuse kontroll
+
+Rakendus peaks täitma järgmised nõuded:
+
+1. **Toodete kuvamine:**
+   - Kõik tooted kuvatakse dünaamiliselt loodud kaartidena
+   - Iga toote kaart näitab: nimi, kategooria, hind, laoseis
+   - Laoseisu staatus arvutatakse automaatselt (OUT/LOW/IN_STOCK)
+   - Värviline indikaator laoseisu staatuse jaoks
+
+2. **Uue toote lisamine:**
+   - Vorm kontrollib sisendi korrektsust (kohustuslikud väljad, hinna valideerimine)
+   - Lisa nupu vajutamisel ilmub uus toode kohe nimekirja
+   - Vorm tühjendatakse pärast edukat lisamist
+   - Eduteade kuvatakse kasutajale
+
+3. **Filtreerimine:**
+   - Saab filtreerida laoseisu järgi (IN_STOCK, LOW, OUT)
+   - Saab filtreerida kategooria järgi
+   - "Kõik tooted" näitab kõiki tooteid
+
+4. **Sorteerimine:**
+   - Nime järgi (tähestikuline)
+   - Hinna järgi (odavamad/kallimad enne)
+   - Kategooria järgi
+   - Laoseisu järgi
+
+5. **LocalStorage:**
+   - Andmed salvestatakse automaatselt LocalStorage'i
+   - Lehe värskendamisel andmed taastatakse
+   - "Taasta algandmed" nupp taastab mock-andmed
+
+6. **Kustutamine:**
+   - Iga toote kaardil on kustuta nupp
+   - Kustutamine eemaldab toote nii vaates kui LocalStorage'ist
+   - Kustutamise kohta kuvatakse teade
+
+7. **Kood vastab headele tavadele:**
+   - TypeScript tüübid korrektselt kasutatud
+   - Andmete loogika ja DOM loogika on eraldi failides
+   - Sisend valideeritakse
+   - Null väärtusi käsitletakse korrektselt
+   - Kood ei ole dubleeritud
