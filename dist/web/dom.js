@@ -61,7 +61,7 @@ export function renderProducts(container, products, getStockStatus, onDelete) {
     });
 }
 /**
- * Get form data as Product object
+ * Get form data as Product object with quantity and specs
  * Returns null if validation fails
  */
 export function getFormData(form) {
@@ -70,16 +70,30 @@ export function getFormData(form) {
     const priceStr = formData.get("price");
     const category = formData.get("category");
     const supplierId = formData.get("supplierId");
+    const quantityStr = formData.get("quantity");
     // Validation
-    if (!name || !category || !supplierId || !priceStr) {
+    if (!name || !category || !supplierId || !priceStr || !quantityStr) {
         return null;
     }
     const price = parseFloat(priceStr);
     if (isNaN(price) || price < 0) {
         return null;
     }
+    const quantity = parseInt(quantityStr, 10);
+    if (isNaN(quantity) || quantity < 0) {
+        return null;
+    }
     // Generate unique ID
     const id = `PROD-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    // Build specs object from form inputs
+    const specs = {};
+    for (let i = 1; i <= 3; i++) {
+        const key = formData.get(`specKey${i}`)?.trim();
+        const value = formData.get(`specValue${i}`)?.trim();
+        if (key && value) {
+            specs[key] = value;
+        }
+    }
     const product = {
         id,
         name: name.trim(),
@@ -87,7 +101,11 @@ export function getFormData(form) {
         category: category.trim(),
         supplierId: supplierId.trim(),
     };
-    return product;
+    // Only add specs if there are any
+    if (Object.keys(specs).length > 0) {
+        product.specs = specs;
+    }
+    return { product, quantity };
 }
 /**
  * Show error message

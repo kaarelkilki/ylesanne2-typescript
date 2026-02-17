@@ -1,7 +1,7 @@
 import { storeData } from "../data/mockData.js";
 import { calculateTotalStock, getStockStatus as calcStockStatus, } from "../utils/calculations.js";
 import { saveProducts, loadProducts } from "../utils/storage.js";
-import { renderProducts, getFormData, showError, showSuccess, } from "./dom.js";
+import { renderProducts, getFormData, showError, showSuccess } from "./dom.js";
 // Application state
 let products = [];
 let stocks = [];
@@ -26,6 +26,7 @@ function init() {
     setupEventListeners();
     // Initial render
     updateDisplay();
+    updateCategoryList();
 }
 /**
  * Setup event listeners
@@ -57,23 +58,25 @@ function handleAddProduct(event) {
     const messageContainer = document.getElementById("messages");
     if (!messageContainer)
         return;
-    const newProduct = getFormData(form);
-    if (!newProduct) {
+    const formData = getFormData(form);
+    if (!formData) {
         showError("Palun täitke kõik väljad korrektselt", messageContainer);
         return;
     }
+    const { product, quantity } = formData;
     // Add to products list
-    products.push(newProduct);
-    // Add stock entry with 0 quantity (OUT status)
+    products.push(product);
+    // Add stock entry with specified quantity
     stocks.push({
-        productId: newProduct.id,
+        productId: product.id,
         warehouse: "Tallinn",
-        quantity: 0,
+        quantity: quantity,
     });
     // Save to LocalStorage
     saveProducts(products);
     // Update display
     updateDisplay();
+    updateCategoryList();
     // Show success message
     showSuccess("Toode lisatud!", messageContainer);
     // Reset form
@@ -123,6 +126,7 @@ function handleReset() {
         stocks = [...storeData.stocks];
         saveProducts(products);
         updateDisplay();
+        updateCategoryList();
         showSuccess("Andmed taastatud!", messageContainer);
     }
 }
@@ -207,6 +211,28 @@ function updateDisplay() {
     if (countElement) {
         countElement.textContent = `Tooteid kokku: ${displayProducts.length}`;
     }
+}
+/**
+ * Update category datalist with unique categories from products
+ */
+function updateCategoryList() {
+    const datalist = document.getElementById("category-list");
+    if (!datalist)
+        return;
+    // Get unique categories
+    const categories = new Set();
+    products.forEach((product) => {
+        if (product.category) {
+            categories.add(product.category);
+        }
+    });
+    // Clear and repopulate datalist
+    datalist.innerHTML = "";
+    categories.forEach((category) => {
+        const option = document.createElement("option");
+        option.value = category;
+        datalist.appendChild(option);
+    });
 }
 // Initialize app when DOM is ready
 if (document.readyState === "loading") {

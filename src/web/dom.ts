@@ -89,19 +89,23 @@ export function renderProducts(
 }
 
 /**
- * Get form data as Product object
+ * Get form data as Product object with quantity and specs
  * Returns null if validation fails
  */
-export function getFormData(form: HTMLFormElement): Product | null {
+export function getFormData(form: HTMLFormElement): {
+  product: Product;
+  quantity: number;
+} | null {
   const formData = new FormData(form);
 
   const name = formData.get("name") as string;
   const priceStr = formData.get("price") as string;
   const category = formData.get("category") as string;
   const supplierId = formData.get("supplierId") as string;
+  const quantityStr = formData.get("quantity") as string;
 
   // Validation
-  if (!name || !category || !supplierId || !priceStr) {
+  if (!name || !category || !supplierId || !priceStr || !quantityStr) {
     return null;
   }
 
@@ -110,8 +114,23 @@ export function getFormData(form: HTMLFormElement): Product | null {
     return null;
   }
 
+  const quantity = parseInt(quantityStr, 10);
+  if (isNaN(quantity) || quantity < 0) {
+    return null;
+  }
+
   // Generate unique ID
   const id = `PROD-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
+  // Build specs object from form inputs
+  const specs: Record<string, string> = {};
+  for (let i = 1; i <= 3; i++) {
+    const key = (formData.get(`specKey${i}`) as string)?.trim();
+    const value = (formData.get(`specValue${i}`) as string)?.trim();
+    if (key && value) {
+      specs[key] = value;
+    }
+  }
 
   const product: Product = {
     id,
@@ -121,7 +140,12 @@ export function getFormData(form: HTMLFormElement): Product | null {
     supplierId: supplierId.trim(),
   };
 
-  return product;
+  // Only add specs if there are any
+  if (Object.keys(specs).length > 0) {
+    product.specs = specs;
+  }
+
+  return { product, quantity };
 }
 
 /**

@@ -132,6 +132,44 @@ section h2 {
   border-color: #667eea;
 }
 
+/* Specs Section */
+.specs-section {
+  grid-column: 1 / -1;
+}
+
+.specs-label {
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #555;
+  display: block;
+}
+
+.specs-inputs {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.spec-key,
+.spec-value {
+  padding: 10px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: border-color 0.3s;
+}
+
+.spec-key:focus,
+.spec-value:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.spec-key {
+  background: #f8f9fa;
+}
+
 /* Buttons */
 .btn {
   padding: 12px 24px;
@@ -141,6 +179,10 @@ section h2 {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
+}
+
+#add-product-form .btn {
+  grid-column: 1 / -1;
   align-self: end;
 }
 

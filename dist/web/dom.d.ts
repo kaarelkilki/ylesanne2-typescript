@@ -11,10 +11,13 @@ export declare function renderProducts(container: HTMLElement, products: Product
     status: StockStatus;
 }, onDelete?: (productId: string) => void): void;
 /**
- * Get form data as Product object
+ * Get form data as Product object with quantity and specs
  * Returns null if validation fails
  */
-export declare function getFormData(form: HTMLFormElement): Product | null;
+export declare function getFormData(form: HTMLFormElement): {
+    product: Product;
+    quantity: number;
+} | null;
 /**
  * Show error message
  */

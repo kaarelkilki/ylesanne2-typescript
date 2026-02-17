@@ -34,6 +34,7 @@ function init(): void {
 
   // Initial render
   updateDisplay();
+  updateCategoryList();
 }
 
 /**
@@ -73,21 +74,23 @@ function handleAddProduct(event: Event): void {
 
   if (!messageContainer) return;
 
-  const newProduct = getFormData(form);
+  const formData = getFormData(form);
 
-  if (!newProduct) {
+  if (!formData) {
     showError("Palun täitke kõik väljad korrektselt", messageContainer);
     return;
   }
 
-  // Add to products list
-  products.push(newProduct);
+  const { product, quantity } = formData;
 
-  // Add stock entry with 0 quantity (OUT status)
+  // Add to products list
+  products.push(product);
+
+  // Add stock entry with specified quantity
   stocks.push({
-    productId: newProduct.id,
+    productId: product.id,
     warehouse: "Tallinn",
-    quantity: 0,
+    quantity: quantity,
   });
 
   // Save to LocalStorage
@@ -95,6 +98,7 @@ function handleAddProduct(event: Event): void {
 
   // Update display
   updateDisplay();
+  updateCategoryList();
 
   // Show success message
   showSuccess("Toode lisatud!", messageContainer);
@@ -155,6 +159,7 @@ function handleReset(): void {
     stocks = [...storeData.stocks];
     saveProducts(products);
     updateDisplay();
+    updateCategoryList();
     showSuccess("Andmed taastatud!", messageContainer);
   }
 }
@@ -259,6 +264,30 @@ function updateDisplay(): void {
   if (countElement) {
     countElement.textContent = `Tooteid kokku: ${displayProducts.length}`;
   }
+}
+
+/**
+ * Update category datalist with unique categories from products
+ */
+function updateCategoryList(): void {
+  const datalist = document.getElementById("category-list");
+  if (!datalist) return;
+
+  // Get unique categories
+  const categories = new Set<string>();
+  products.forEach((product) => {
+    if (product.category) {
+      categories.add(product.category);
+    }
+  });
+
+  // Clear and repopulate datalist
+  datalist.innerHTML = "";
+  categories.forEach((category) => {
+    const option = document.createElement("option");
+    option.value = category;
+    datalist.appendChild(option);
+  });
 }
 
 // Initialize app when DOM is ready
