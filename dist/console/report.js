@@ -1,22 +1,17 @@
 import { storeData } from "../data/mockData.js";
 import { calculateTotalStock, calculateAverageRating, getStockStatus, calculateDiscountedPrice, formatSpecifications, } from "../utils/calculations.js";
-function generateReport() {
+export function printReport(data) {
     console.log("Products:");
     console.log();
-    for (const product of storeData.products) {
-        // Find supplier
-        const supplier = storeData.suppliers.find((s) => s.id === product.supplierId);
-        if (!supplier)
-            continue;
-        // Calculate values
-        const totalStock = calculateTotalStock(product.id, storeData.stocks);
+    for (const product of data.products) {
+        const supplier = data.suppliers.find((s) => s.id === product.supplierId);
+        const supplierName = supplier ? supplier.name : "Unknown";
+        const totalStock = calculateTotalStock(product.id, data.stocks);
         const stockStatus = getStockStatus(totalStock);
-        const averageRating = calculateAverageRating(product.id, storeData.reviews);
-        const discountInfo = calculateDiscountedPrice(product, averageRating, storeData.discountRules);
+        const averageRating = calculateAverageRating(product.id, data.reviews);
+        const discountInfo = calculateDiscountedPrice(product, averageRating, data.discountRules);
         const specsFormatted = formatSpecifications(product.specs);
-        // Format rating
         const ratingText = averageRating === null ? "no reviews" : averageRating.toFixed(2);
-        // Format price
         let priceText;
         if (discountInfo) {
             const discountedPrice = discountInfo.discountedPrice.toFixed(2);
@@ -25,9 +20,11 @@ function generateReport() {
         else {
             priceText = product.price.toFixed(2);
         }
-        // Build the output
-        console.log(`  - ${product.name} [${product.id}] | ${product.category} | supplier: ${supplier.name} | available: ${totalStock} (${stockStatus}) | rating: ${ratingText} | ${specsFormatted ? `specs: ${specsFormatted} | ` : ""}price: ${priceText}`);
+        console.log(`  - ${product.name} [${product.id}] | ${product.category} | supplier: ${supplierName} | available: ${totalStock} (${stockStatus}) | rating: ${ratingText} | ${specsFormatted ? `specs: ${specsFormatted} | ` : ""}price: ${priceText}`);
     }
 }
-generateReport();
+const isBrowser = typeof window !== "undefined" && typeof document !== "undefined";
+if (!isBrowser) {
+    printReport(storeData);
+}
 //# sourceMappingURL=report.js.map

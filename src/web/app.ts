@@ -1,4 +1,4 @@
-import type { Product, Stock, StockStatus } from "../types/index.js";
+import type { Product, Stock, StockStatus, StoreData } from "../types/index.js";
 import { storeData } from "../data/mockData.js";
 import {
   calculateTotalStock,
@@ -6,6 +6,7 @@ import {
 } from "../utils/calculations.js";
 import { saveProducts, loadProducts } from "../utils/storage.js";
 import { renderProducts, getFormData, showError, showSuccess } from "./dom.js";
+import { printReport } from "../console/report.js";
 
 // Application state
 let products: Product[] = [];
@@ -35,6 +36,9 @@ function init(): void {
   // Initial render
   updateDisplay();
   updateCategoryList();
+
+  // Initial report from current state
+  printReport(getReportData());
 }
 
 /**
@@ -100,6 +104,9 @@ function handleAddProduct(event: Event): void {
   updateDisplay();
   updateCategoryList();
 
+  // Refresh console report
+  printReport(getReportData());
+
   // Show success message
   showSuccess("Toode lisatud!", messageContainer);
 
@@ -142,6 +149,9 @@ function handleDeleteProduct(productId: string): void {
   // Update display
   updateDisplay();
 
+  // Refresh console report
+  printReport(getReportData());
+
   // Show success message
   showSuccess("Toode kustutatud!", messageContainer);
 }
@@ -161,7 +171,16 @@ function handleReset(): void {
     updateDisplay();
     updateCategoryList();
     showSuccess("Andmed taastatud!", messageContainer);
+    printReport(getReportData());
   }
+}
+
+function getReportData(): StoreData {
+  return {
+    ...storeData,
+    products: [...products],
+    stocks: [...stocks],
+  };
 }
 
 /**

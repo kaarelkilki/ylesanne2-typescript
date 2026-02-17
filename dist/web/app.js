@@ -2,6 +2,7 @@ import { storeData } from "../data/mockData.js";
 import { calculateTotalStock, getStockStatus as calcStockStatus, } from "../utils/calculations.js";
 import { saveProducts, loadProducts } from "../utils/storage.js";
 import { renderProducts, getFormData, showError, showSuccess } from "./dom.js";
+import { printReport } from "../console/report.js";
 // Application state
 let products = [];
 let stocks = [];
@@ -27,6 +28,8 @@ function init() {
     // Initial render
     updateDisplay();
     updateCategoryList();
+    // Initial report from current state
+    printReport(getReportData());
 }
 /**
  * Setup event listeners
@@ -77,6 +80,8 @@ function handleAddProduct(event) {
     // Update display
     updateDisplay();
     updateCategoryList();
+    // Refresh console report
+    printReport(getReportData());
     // Show success message
     showSuccess("Toode lisatud!", messageContainer);
     // Reset form
@@ -111,6 +116,8 @@ function handleDeleteProduct(productId) {
     saveProducts(products);
     // Update display
     updateDisplay();
+    // Refresh console report
+    printReport(getReportData());
     // Show success message
     showSuccess("Toode kustutatud!", messageContainer);
 }
@@ -128,7 +135,15 @@ function handleReset() {
         updateDisplay();
         updateCategoryList();
         showSuccess("Andmed taastatud!", messageContainer);
+        printReport(getReportData());
     }
+}
+function getReportData() {
+    return {
+        ...storeData,
+        products: [...products],
+        stocks: [...stocks],
+    };
 }
 /**
  * Get stock status for a product
