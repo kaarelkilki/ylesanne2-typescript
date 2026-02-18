@@ -1,9 +1,6 @@
 import type { Product, Stock, StockStatus, StoreData } from "../types/index.js";
 import { storeData } from "../data/mockData.js";
-import {
-  calculateTotalStock,
-  getStockStatus as calcStockStatus,
-} from "../utils/calculations.js";
+import { calculateTotalStock, getStockStatus as calcStockStatus } from "../utils/calculations.js";
 import { saveProducts, loadProducts } from "../utils/storage.js";
 import { renderProducts, getFormData, showError, showSuccess } from "./dom.js";
 import { printReport } from "../console/report.js";
@@ -271,12 +268,7 @@ function updateDisplay(): void {
   displayProducts = sortProducts(displayProducts);
 
   // Render products
-  renderProducts(
-    container,
-    displayProducts,
-    getProductStockStatus,
-    handleDeleteProduct,
-  );
+  renderProducts(container, displayProducts, getProductStockStatus, handleDeleteProduct);
 
   // Update product count
   const countElement = document.getElementById("product-count");

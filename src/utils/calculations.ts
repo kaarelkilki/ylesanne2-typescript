@@ -1,18 +1,9 @@
-import type {
-  Stock,
-  Review,
-  DiscountRule,
-  StockStatus,
-  Product,
-} from "../types/index.js";
+import type { Stock, Review, DiscountRule, StockStatus, Product } from "../types/index.js";
 
 /**
  * Calculate total stock quantity across all warehouses for a product
  */
-export function calculateTotalStock(
-  productId: string,
-  stocks: Stock[],
-): number {
+export function calculateTotalStock(productId: string, stocks: Stock[]): number {
   return stocks
     .filter((stock) => stock.productId === productId)
     .reduce((total, stock) => total + stock.quantity, 0);
@@ -22,22 +13,14 @@ export function calculateTotalStock(
  * Calculate average rating for a product
  * Returns null if no reviews exist
  */
-export function calculateAverageRating(
-  productId: string,
-  reviews: Review[],
-): number | null {
-  const productReviews = reviews.filter(
-    (review) => review.productId === productId,
-  );
+export function calculateAverageRating(productId: string, reviews: Review[]): number | null {
+  const productReviews = reviews.filter((review) => review.productId === productId);
 
   if (productReviews.length === 0) {
     return null;
   }
 
-  const sum = productReviews.reduce(
-    (total, review) => total + review.rating,
-    0,
-  );
+  const sum = productReviews.reduce((total, review) => total + review.rating, 0);
   return sum / productReviews.length;
 }
 
@@ -93,9 +76,7 @@ export function calculateDiscountedPrice(
 /**
  * Format specifications as "key=value, key=value, ..."
  */
-export function formatSpecifications(
-  specs?: Record<string, string>,
-): string | null {
+export function formatSpecifications(specs?: Record<string, string>): string | null {
   if (!specs || Object.keys(specs).length === 0) {
     return null;
   }

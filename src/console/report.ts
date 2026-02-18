@@ -19,15 +19,10 @@ export function printReport(data: StoreData): void {
     const totalStock = calculateTotalStock(product.id, data.stocks);
     const stockStatus = getStockStatus(totalStock);
     const averageRating = calculateAverageRating(product.id, data.reviews);
-    const discountInfo = calculateDiscountedPrice(
-      product,
-      averageRating,
-      data.discountRules,
-    );
+    const discountInfo = calculateDiscountedPrice(product, averageRating, data.discountRules);
     const specsFormatted = formatSpecifications(product.specs);
 
-    const ratingText =
-      averageRating === null ? "no reviews" : averageRating.toFixed(2);
+    const ratingText = averageRating === null ? "no reviews" : averageRating.toFixed(2);
 
     let priceText: string;
     if (discountInfo) {
@@ -43,9 +38,13 @@ export function printReport(data: StoreData): void {
   }
 }
 
-const isBrowser =
-  typeof window !== "undefined" && typeof document !== "undefined";
+const isBrowser = typeof window !== "undefined" && typeof document !== "undefined";
+const env =
+  typeof globalThis !== "undefined"
+    ? (globalThis as { process?: { env?: { NODE_ENV?: string } } }).process?.env
+    : undefined;
+const isTest = env?.NODE_ENV === "test";
 
-if (!isBrowser) {
+if (!isBrowser && !isTest) {
   printReport(storeData);
 }
